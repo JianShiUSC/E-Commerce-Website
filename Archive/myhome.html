@@ -1,0 +1,1258 @@
+<!--This is Jiafeng Ni's home page for HW1-->
+<DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript">
+
+
+
+function changeCountry( elem ) {
+
+var countrySelect = document.getElementById("countrySelect");
+var length = countrySelect.options.length;
+for ( i = 0; i < length; i++) { countrySelect.remove(1); }
+
+
+if( elem.value == "citizen" ) {
+var optionArray = ["United States of America|United States of America"];
+} 
+else if( elem.value == "permanent resident" ) {
+var optionArray = ["Brazil|Brazil","China|China","Japan|Japan","India|India","Germany|Germany"];
+} 
+else if( elem.value == "international student" ) {
+var optionArray = ["Brazil|Brazil","China|China","Japan|Japan","India|India","Germany|Germany"];
+}
+
+for(var option in optionArray){
+var pair = optionArray[option].split("|");
+var newOption = document.createElement("option");
+newOption.value = pair[0];
+newOption.text = pair[1];
+countrySelect.add(newOption);
+}
+}
+
+
+function changeProgram( elem ) {
+
+var programSelect = document.getElementById("study program");		 
+var length = programSelect.options.length;
+for (i = 1; i < length; i++) {
+		programSelect.remove(1);
+}
+
+if( elem.selectedIndex == 1 ) {
+var optionArray = ["Graduate Certificate in Journalism|Graduate Certificate in Journalism",
+		"Specilized Journalism-The Arts|Specilized Journalism-The Arts",
+		"Master of Communication Management|Master of Communication Management",
+		"Master of Public Diplomacy Practitioner|Master of Public Diplomacy Practitioner"];
+} 
+else if( elem.selectedIndex == 2) {
+var optionArray = ["Curatorial Practices and the Public Sphere (M.A.)|Curatorial Practices and the Public Sphere (M.A.)"];
+} 
+else if( elem.selectedIndex == 3 ) {
+var optionArray = ["Clinical Research Design and Management (Certificate)|Clinical Research Design and Management (Certificate)",
+		"Food Safety (Certificate)|Food Safety (Certificate)",
+		"Healthcare Decision Analysis (M.S.)|Healthcare Decision Analysis (M.S.)",
+		"Management of Drug Development (M.S.)|Management of Drug Development (M.S.)",
+		"Patient and Product Safety (Certificate)|Patient and Product Safety (Certificate)",];
+}
+else if( elem.selectedIndex == 4 ) {
+var optionArray = ["Social Work (M.S.W)|Social Work (M.S.W)",
+		"Social Work (Ph.D.)|Social Work (Ph.D.)|",
+		"Virtual Academic Center MSW@USC Program|Virtual Academic Center MSW@USC Program"];		
+}
+else if( elem.selectedIndex == 5) {
+var optionArray = ["Aerospace Engineering (M.S.)|Aerospace Engineering (M.S.)",
+		"Analytics (M.S.)|Analytics (M.S.)",
+		"Biomedical Engineering (M.S)|Biomedical Engineering (M.S)",
+		"Chemical Engineering (Ph.D.)|Chemical Engineering (Ph.D.)",
+		"Computer Science (Computer Networks)|Computer Science (Computer Networks)",
+		"Computer Science (Software Engineering)|Computer Science (Software Engineering)",
+		"Electrical Engineering (M.S.)|Electrical Engineering (M.S.)"];
+}
+
+for(var option in optionArray){
+var pair = optionArray[option].split("|");
+var newOption = document.createElement("option");
+newOption.value = pair[0];
+newOption.text = pair[1];
+programSelect.add(newOption);
+}
+}
+
+function goToNext (  ) {
+var form1 = document.getElementById("div1");
+var form2 = document.getElementById("div2");
+
+form1.style.display = "none";
+form2.style.display = "block";
+}
+
+
+function backToFirstForm () {
+var form1 = document.getElementById("div1");
+var form2 = document.getElementById("div2");
+var report1 = document.getElementById("div3");
+var report2 = document.getElementById("div4");
+
+form2.style.display = "none";
+form1.style.display = "block";
+report1.style.display = "none";
+report2.style.display = "none";
+}
+
+var firstFormValid = false;
+var lgName = {
+		firstName:"", 
+		lastName:"",
+		middleName: ""
+		};
+var otherName = {
+		firstName:"",
+		lastName:"",
+		middleName:""
+		};
+var uscid = "";
+var demographic = {
+		residency:"",
+		country:"",
+		bYear:0,
+		bMon:"",
+		bDay:0,
+		gender: "",
+		ethnicity:""
+		};
+
+var hasUSCID = false;
+
+var knowUSC = [];
+var otherSchools = [];
+
+function addWays () {
+var length = knowUSC.length;
+knowUSC.splice(0,length);
+
+if (document.getElementById("friends").checked) {knowUSC.push("from friends");}
+if (document.getElementById("USC").checked) {knowUSC.push("from USC website");}
+if (document.getElementById("media").checked) {knowUSC.push("from media");}
+
+}
+
+function addSchools () {
+
+var length = otherSchools.length;
+
+otherSchools.splice(0,length);
+
+if (document.getElementById("UCLA").checked) {otherSchools.push("UCLA");}
+if (document.getElementById("UCB").checked) {otherSchools.push("UCB");}
+if (document.getElementById("Stanford").checked) {otherSchools.push("Stanford");}
+if (document.getElementById("other school").checked) {otherSchools.push("other school");}
+}
+
+function checkResidency () {
+
+var checked = false;
+
+if ( document.getElementById("citizen").checked ) {
+demographic.residency = "citizen";
+checked = true;
+}
+else if (document.getElementById("permanent resident").checked) {
+checked = true;
+}
+else if (document.getElementById("international").checked) {
+checked = true;
+}
+
+return checked;
+}
+
+function checkCountry () {
+
+var checked = false;
+var countryList = document.getElementById("countrySelect").options;
+
+if (!countryList[0].selected){
+
+checked = true;
+
+for (i = 1; i < countryList.length; i++) {
+if (countryList[i].selected) {
+demographic.country = countryList[i].value;
+}
+}
+}
+
+return checked;
+}
+
+function checkBirthDate () {
+
+var checked = false;
+var monOption = document.getElementById("allMonth").options;
+var dateOption = document.getElementById("allDate").options;
+var yearText = document.getElementById("birthYear").value;
+
+for (i = 0; i < monOption.length; i++) {
+if (monOption[i].selected) {demographic.bMon = monOption[i].value;}
+}
+
+for (i = 0; i < dateOption.length; i++) {
+if (dateOption[i].selected) {demographic.bDay = dateOption[i].value;}
+}
+
+if (yearText.length == 4 || !isNaN(yearText)) {
+var yearRead = parseInt(yearText);
+if (yearRead > 1950 && yearRead < 2008) {
+demographic.bYear = yearRead;
+checked = true;
+}
+}
+
+return checked;
+
+}
+
+function checkGender () {
+
+var checked = false;
+var male = document.getElementById("gender1");
+var female = document.getElementById("gender2");
+var neither = document.getElementById("gender3");
+
+if (male.checked) {demographic.gender = "Male"; checked = true;}
+else if (female.checked) {demographic.gender = "Female"; checked = true;}
+else if (neither.checked) {demographic.gender = "Neither"; checked = true;}
+
+return checked;
+
+}
+
+function checkEthnicity () {
+
+var checked = false;
+var ethnicityOption = document.getElementById("ethnicity").options;
+
+if (!ethnicityOption[0].selected) {
+for (i = 1; i < ethnicityOption.length; i++) {
+if (ethnicityOption[i].selected) {
+checked = true;
+demographic.ethnicity = ethnicityOption[i].value;
+}
+}
+}
+
+return checked;
+
+}
+
+function firstFormCheck () {
+
+var lgFirstNameText = document.getElementById("lgFirstName");
+var lgLastNameText = document.getElementById("lgLastName");
+var lgMiddleNameText = document.getElementById("lgMiddleName");
+
+var otherFirstNameText = document.getElementById("otherFirstName");
+var otherLastNameText = document.getElementById("otherLastName");
+var otherMiddleNameText = document.getElementById("otherMiddleName");
+
+lgName.firstName = lgFirstNameText.value;
+lgName.lastName = lgLastNameText.value;
+lgName.middleName = lgMiddleNameText.value;
+
+otherName.firstName = otherFirstNameText.value;
+otherName.lastName = otherLastNameText.value;
+otherName.middleName = otherMiddleNameText.value;
+
+uscid = document.getElementById("uscid").value;
+var uscidNum = uscid.substring(0,4) + uscid.substring(5,9) + uscid.substring(10,12);
+
+var firstNameChecked = false;
+var lastNameChecked = false;
+var uscidChecked = false;
+var residencyChecked = false;
+var countryChecked = false;
+var yearChecked = false;
+var genderChecked = false;
+var ethnicityChecked = false;
+
+if (lgName.firstName.length == 0) {
+document.getElementById("firstNameError").innerHTML = " &nbsp;&nbsp;invalid";
+}
+else {
+firstNameChecked = true;
+document.getElementById("firstNameError").innerHTML = "";
+}
+
+if (lgName.lastName.length == 0) {
+document.getElementById("lastNameError").innerHTML = " &nbsp;&nbsp;invalid";
+}
+else {
+lastNameChecked = true;
+document.getElementById("lastNameError").innerHTML = "";
+}
+
+if ( uscid.length != 0 && (uscid.length != 12 || uscid.substring(4,5) != "-" || uscid.substring(9,10) != "-" || isNaN(uscidNum)) ) {
+document.getElementById("uscidError").innerHTML = " &nbsp;&nbsp;invalid";
+}
+else {
+uscidChecked = true;
+document.getElementById("uscidError").innerHTML = "";
+}
+
+if (!checkResidency()) {
+document.getElementById("residencyError").innerHTML = " &nbsp;&nbsp;please select one";
+}
+else {
+residencyChecked =true;
+document.getElementById("residencyError").innerHTML = "";
+}
+
+if (!checkCountry()) {
+document.getElementById("countryError").innerHTML = " &nbsp;&nbsp;please select one";
+}
+else {
+countryChecked = true;
+document.getElementById("countryError").innerHTML = "";
+}
+
+if (!checkBirthDate()) {
+document.getElementById("yearError").innerHTML = " &nbsp;&nbsp;invalid";
+}
+else {
+yearChecked = true;
+document.getElementById("yearError").innerHTML = "";
+}
+
+if (!checkGender()) {
+document.getElementById("genderError").innerHTML = " &nbsp;&nbsp;please select one";
+}
+else {
+genderChecked = true;
+document.getElementById("genderError").innerHTML = "";
+}
+
+if (!checkEthnicity()) {
+document.getElementById("ethnicityError").innerHTML = " &nbsp;&nbsp;please select one";
+}
+else {
+ethnicityChecked = true;
+document.getElementById("ethnicityError").innerHTML = "";
+}
+
+addWays();
+addSchools();
+
+firstFormValid = firstNameChecked && lastNameChecked && uscidChecked && residencyChecked && countryChecked && yearChecked && genderChecked && ethnicityChecked;
+
+if (firstFormValid) { goToNext(); }
+}
+
+var program = {
+		semester: "",
+		school: "",
+		program: "",
+		previousTerm: "",
+		perviousYear: 0,
+		perviousDegree: "",
+		previousSchool: []
+		};
+
+var background = {
+		gradingType: "",
+		gpa: 0,
+		language: [],
+		computer: [],
+		publication: ""
+		};
+
+var secondFormValid = false;
+
+var obj = [];
+var num = 0;
+
+function checkGrade () {
+
+var checked = false;
+
+var gradeFirst = document.getElementById("grading4");
+var gradeSecond = document.getElementById("grading5");
+var gradeThird = document.getElementById("grading100");
+var gpaText = document.getElementById("gpa").value;
+
+if (gradeFirst.checked) {
+background.gradingType = "4";
+if (gpaText.length == 0 || isNaN(gpaText) || parseFloat(gpaText) > 4 || parseFloat(gpaText) <= 0) {
+document.getElementById("gpaError").innerHTML = " &nbsp;&nbsp;&nbsp;&nbsp;invalid GPA";
+}
+else {background.gpa = parseFloat(gpaText); checked = true;}
+}
+else if (gradeSecond.checked) {
+background.gradingType = "5";
+if (gpaText.length == 0 || isNaN(gpaText) || parseFloat(gpaText) > 5 || parseFloat(gpaText) <= 0) {
+document.getElementById("gpaError").innerHTML = " &nbsp;&nbsp;&nbsp;&nbsp;invalid GPA";
+}
+else {background.gpa = parseFloat(gpaText); checked = true;}
+}
+else if (gradeThird.checked) {
+background.gradingType = "100";
+if (gpaText.length == 0 || isNaN(gpaText) || parseFloat(gpaText) > 100 || parseFloat(gpaText) <= 0) {
+document.getElementById("gpaError").innerHTML = " &nbsp;&nbsp;&nbsp;&nbsp;invalid GPA";
+}
+else {background.gpa = parseFloat(gpaText); checked = true;}
+}
+else {
+document.getElementById("gpaError").innerHTML = " &nbsp;&nbsp;&nbsp;&nbsp; please select";
+}
+
+return checked;
+}
+
+
+function checkThisSemester() {
+
+var checked = false;
+var semesterOption = document.getElementById("term").options;
+
+if (!semesterOption[0].selected) {
+for (i = 1; i < semesterOption.length; i++) {
+if (semesterOption[i].selected) {
+program.semester = semesterOption[i].value; 
+checked = true;
+}
+}
+}
+return checked;
+}
+
+function checkSchool() {
+
+var checked = false;
+var schoolOption = document.getElementById("college").options;
+
+if (!schoolOption[0].selected) {
+for (i = 1; i < schoolOption.length; i++) {
+if (schoolOption[i].selected) {program.school = schoolOption[i].value; checked = true;}
+}
+}
+
+return checked;
+
+}
+
+function checkProgram () {
+
+var checked = false;
+var programOption = document.getElementById("study program").options;
+
+if (!programOption[0].selected) {
+for (i = 1; i < programOption.length; i++) {
+if (programOption[i].selected) {program.program = programOption[i].value; checked = true;}
+}
+}
+
+return checked;
+}
+
+function checkPreviousProgram () {
+
+var checked = false;
+
+var termOption = document.getElementById("term2").options;
+var yearText = document.getElementById("year applied").value;
+
+var len = program.previousSchool.length;
+program.previousSchool.splice(0, len);
+
+if (termOption[0].selected) {
+checked = true;
+document.getElementById("previousProgramError").innerHTML = "";
+}
+else {
+for (i = 1; i < termOption.length; i++) {
+if (termOption[i].selected) {program.previousTerm = termOption[i].value;}
+}
+
+if (yearText.length == 0  || parseInt(yearText.substring(6, 10)) > 2015 ) {
+document.getElementById("previousProgramError").innerHTML = " &nbsp;&nbsp;&nbsp;invalid year";
+}
+else {
+program.previousYear = parseInt(yearText.substring(0, 4), 10);
+document.getElementById("previousProgramError").innerHTML = "";
+var checkDegree = false;
+
+if (document.getElementById("graduate").checked) {program.previousDegree = "graduate"; checkDegree = true;}
+else if (document.getElementById("undergraduate").checked) {program.previousDegree = "undergraduate"; checkDegree = true;}
+
+if (!checkDegree) {
+document.getElementById("previousProgramError").innerHTML = " &nbsp;&nbsp;&nbsp;please select";
+}
+else {
+var anne = document.getElementById("anne");
+var roski = document.getElementById("roski");
+var pharm = document.getElementById("pharm");
+var social = document.getElementById("social");
+var viterbi = document.getElementById("viterbi");
+
+if (anne.checked) {program.previousSchool.push(anne.value);}
+if (roski.checked) {program.previousSchool.push(roski.value);}
+if (pharm.checked) {program.previousSchool.push(pharm.value);}
+if (social.checked) {program.previousSchool.push(social.value);}
+if (viterbi.checked) {program.previousSchool.push(viterbi.value);}
+
+if (program.previousSchool.length == 0) {
+document.getElementById("previousSchoolError").innerHTML = " &nbsp;&nbsp;please select";
+}
+else {checked = true;}
+}
+}
+}
+
+if (checked ) {
+document.getElementById("previousProgramError").innerHTML = "";
+document.getElementById("previousSchoolError").innerHTML = "";
+}
+
+return checked;
+}
+
+
+
+function apply (first, last, middle, otherFirst, otherLast, otherMiddle, USCID, resi, coun, year, day, mon, gen, eth, sem, sch, pro, preTerm, preYear, preDegree, preSchool, type, GPA, lang, comp, pub) {
+this.firstName = first;
+this.lastName = last;
+this.middleName = middle;
+this.otherFirstName = otherFirst;
+this.otherLastName = otherLast;
+this.otherMiddleName = otherMiddle;
+this.uscid = USCID;
+this.residency = resi;
+this.country = coun;
+this.birthYear = year;
+this.birthDate = day;
+this.birthMon = mon;
+this.gender = gen;
+this.ethnicity = eth;
+this.semester = sem;
+this.school = sch;
+this.program = pro;
+this.previousTerm = preTerm;
+this.previousYear = preYear;
+this.previousDegree = preDegree;
+this.previousSchool = preSchool;
+this.gradingType = type;
+this.gpa = GPA;
+this.language = lang;
+this.computer = comp;
+this.publication = pub;
+}
+
+var objs = [];
+var count = 0;
+
+function goToReport1 ()  {
+
+count++;
+
+var form2 = document.getElementById("div2");
+var report1 = document.getElementById("div3");
+var report2 = document.getElementById("div4");
+
+form2.style.display = "none";
+report1.style.display = "block";
+report2.style.display = "none";
+
+objs.push(new apply(lgName.firstName, lgName.lastName, lgName.middleName, otherName.firstName, otherName.lastName, otherName.middleName, uscid, demographic.residency, demographic.country, demographic.bYear, demographic.bDay, demographic.bMon, demographic.gender, demographic.ethnicity, program.semester, program.school, program.program, program.previousTerm, program.previousYear, program.previousDegree, program.previousSchool, background.gradingType, background.gpa, background.language, background.computer, background.publication));
+
+
+var reportDiv = document.getElementById("report1Info");
+
+var len = objs.length;
+var reportText = "";
+
+
+for (i = 0; i < len - 1; i++) {
+reportText += ("<p><div style='display:table-cell;width:100%;font-size:15'>" + (i + 1) + ". " +
+		"Previous application: Hi, " + objs[i].lastName + " " + objs[i].firstName + ". " + "Your application has been successfully processed. All identification, demographic, program, and background information are valid." +
+		"</div><div style='display:table-cell'><input type='button' name='goToReport2' value='See Application Detail' onClick='goToReport2(" + i +")' style='width:150px;float:right' /></div></p>");
+}
+
+reportText += ("<p><div style='display:table-cell;width:100%;font-size:15'>" + len + ". " +
+		"Latest application: Hi, " + objs[len - 1].lastName + " " + objs[len - 1].firstName + ". " + "Your application has been successfully processed. All identification, demographic, program, and background information are valid." + "</div><div style='display:table-cell'><input type='button' name='goToReport2' value='See Application Detail' onClick='goToReport2("+ (len - 1) +")' style='width:150px;float:right' /></div></p>");
+
+reportDiv.innerHTML = reportText;
+
+}
+
+function goToReport2 (num) {
+var report1 = document.getElementById("div3");
+var report2 = document.getElementById("div4");
+
+var applicationInfo = document.getElementById("application");
+var identificationInfo = document.getElementById("identification");
+
+var app = objs[num];
+
+var t1 = "<p class='text'>Congratulations, " + app.firstName + " " + app.lastName + "! ";
+if (app.otherFirstName.length == 0) {
+t1 += "You did not provide other name. Actually, you can just enter a nickname, that would be interesting!</p>";
+}
+else {
+t1 += "I can also call you " + app.otherFirstName + " " + app.otherLastName + ", and that is fun!</p>";
+}
+
+if (app.gender == "Male") {
+t1 += "<p class='text'>You are a boy ";
+}
+else if (app.gender == "Female") {
+t1 += "<p class='text'>You are a girl and ";
+}
+else {t1 += "<p class='text'>You do not want us to know your sex. But ";}
+
+t1 += "your birthdate is date " + app.birthDate + ", " + app.birthMon + " in year " + app.birthYear + ".</p><p class='text'>"
+
+if (app.uscid.length == 0) {
+t1 += "You did not attend USC before. ";
+}
+else {
+t1 += ("You have atteded USC before and your USCID is " + app.uscid + ". ");
+}
+
+t1 += ("You come from " + app.country + " and your ethnicity is " + app.ethnicity + ".</p><p class='text'>It is really great to know you!</p>");
+
+var t2 = ("<p class='text'>This is your application information:</p><p class='text'>You are going to apply for " + app.program + " program in " + app.school + " " + app.semester + "</p><p class='text'>");
+
+if (app.previousTerm.length == 0) {
+t2 += "You have not atted for any program in USC before. USC welcome your to join our big family!</p><p class='text'>"
+}
+else {
+t2 += ("You have attended a program in USC before, which is term " + app.previousTerm + " " + app.previousYear + " " + app.previousDegree + " degree program in " + app.previousSchool + ". Welcome back, trojan!</p><p class='text'>");
+}
+
+t2 += ("Your undergraduate grading type is " + app.gradingType + ", and your total undergraduate GPA is " + app.gpa + ". That is great!</p><p class='text'>" );
+
+if (app.language.length == 0) {
+t2 += "You are not very good at all languages we provided. You will absolutely learn some of them in USC! "
+}
+else {
+t2 += ("You are capable of speaking " + app.language + ", that is really great! ");
+}
+
+if (app.computer.length == 0) {
+t2 += "Your are not good at programming languages we provided. You need more practice.</p>"
+}
+else {
+t2 += ("Your are a good programmer since you are good at the following programming languages: " + app.computer + ". </p>");
+}
+
+if (app.publication.length != 0) {
+t2 += ("<p class='text'>During your undergraduate period, you have the following hornors or publications: " + app.publication + ".</p>");
+}
+
+
+identificationInfo.innerHTML = t1;
+applicationInfo.innerHTML = t2;
+
+
+report1.style.display = "none";
+report2.style.display = "block";
+}
+
+function secondFormCheck () {
+
+var programCheck = false;
+var len1 = background.language.length;
+var len2 = background.computer.length;
+background.language.splice(0, len1);
+background.computer.splice(0, len2);
+
+var eng = document.getElementById("english");
+var span = document.getElementById("spanish");
+var fren = document.getElementById("french");
+
+if (eng.checked) {background.language.push(eng.value);}
+if (span.checked) {background.language.push(span.value);}
+if (fren.checked) {background.language.push(fren.value);}
+
+var c = document.getElementById("c");
+var java = document.getElementById("java");
+var python = document.getElementById("python");
+var html = document.getElementById("html");
+
+if (c.checked) {background.computer.push(c.value);}
+if (java.checked) {background.computer.push(java.value);}
+if (python.checked) {background.computer.push(python.value);}
+if (html.checked) {background.computer.push(html.value);}
+
+background.publication = document.getElementById("honor").value;
+
+var termChecked = false;
+var schoolChecked = false;
+var programChecked = false;
+var previousProgramChecked = false;
+var gpaChecked = false;
+
+if (!checkThisSemester()) {
+document.getElementById("termError").innerHTML = " &nbsp;&nbsp; please select";
+}
+else {
+termChecked = true;
+document.getElementById("termError").innerHTML = "";
+}
+
+if (!checkSchool()) {
+document.getElementById("schoolError").innerHTML = " &nbsp;&nbsp; please select";
+}
+else {
+schoolChecked = true;
+document.getElementById("schoolError").innerHTML = "";
+}
+
+if (!checkProgram()) {
+document.getElementById("programError").innerHTML = " &nbsp;&nbsp; please select";
+}
+else {
+programChecked = true;
+document.getElementById("programError").innerHTML = "";
+}
+
+previousProgramChecked = checkPreviousProgram();
+gpaChecked = checkGrade();
+
+if (gpaChecked) {document.getElementById("gpaError").innerHTML = "";}
+
+secondFormValid = termChecked && schoolChecked && programChecked && previousProgramChecked && gpaChecked;
+
+if (secondFormValid) {goToReport1();}
+}
+
+
+</script>
+
+<style>
+body {
+background-image: url("usc.png");
+background-repeat: no-repeat;
+background-position: right top;
+background-color: #990000;
+}
+
+.textContainer {
+padding-left: 50px;
+padding-right: 50px;
+    padding-top: 30px;
+background-color: #FFFFFF;
+margin: 150px 100px 150px 100px;
+}
+
+.divInDivLeft {
+display: table-cell;
+width: 550px;
+margin: 10px;
+}
+
+.divInDivRight {
+display: table-cell;
+width: 440px;
+margin: 10px;
+}
+
+legend {
+display:block;
+color:  #990000;
+padding-left: 2px;
+padding-right: 2px;
+border: none;
+font-size: 18px;
+}
+
+td.caption {
+color: #990000;
+font-size: 12px;
+font-style: italic;
+}
+
+p.schoolApplied {
+font-size: 14px;
+margin: 0;
+padding: 3px;
+}
+
+font.choice {
+font-size: 14px;
+}
+
+font.caption {
+color:#990000;
+font-style:italic;
+font-size:12px;
+}
+
+font.error {
+color: #FF0000;
+font-size:14px;
+}
+
+td.choice {
+font-size: 14px;
+}
+
+p.text {
+padding:5px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="div1" class="textContainer">
+
+<h2 align="center" display:"block">Personal Information</h2>
+
+<font size="2.2"> &nbsp; Please note that all questions followed by an asterisk (*) are required to submit this form.</font><br>
+
+<form id="form1" name="form1">
+<fieldset>
+<legend>Identification</legend>
+<table style="width:100%" cellpadding="4">
+  
+  <tr colspan="4">
+    <font size="2">Please use your legal name.  <b>Do not</b> use nicknames or abbreviations.</font>
+  </tr>
+  <tr>
+    <td width="17%">1. Legal Name:*</td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="lgLastName"><font class="error" id="lastNameError"></font></td>
+    <td width="17%">2. Other Name:</td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="otherLastName"></td>
+  </tr>
+  <tr>
+    <td width="17%"></td>
+    <td width="33%" class="caption">Last Name (Family, Surname)*</td>
+    <td width="17%"></td>
+    <td width="33%" class="caption">Last Name (other)</td>
+  </tr>
+  <tr>
+    <td width="17%"></td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="lgFirstName"><font class="error" id="firstNameError"></font></td>
+    <td width="17%"></td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="otherFirstName"></td>
+  </tr>
+  <tr>
+    <td width="17%"></td>
+    <td width="33%" class="caption">First Name*</td>
+    <td width="17%"></td>
+    <td width="33%" class="caption">First Name (other)</td>
+  </tr>
+  <tr>
+    <td width="17%"></td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="lgMiddleName"></td>
+    <td width="17%"></td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="otherMiddleName"></td>
+  </tr>
+  <tr>
+    <td width="17%"></td>
+    <td width="33%" class="caption">Middle Name</td>
+    <td width="17%"></td>
+    <td width="33%" class="caption">Middle Name (other)</td>
+  </tr>
+  <tr style="height:10px"></tr>
+  <tr>
+    <td width="17%">3. USC ID:(if has)</td>
+    <td width="33%"><input type="text" maxlength="100" style="width:270px" value="" id="uscid"><font class="error" id="uscidError"></font></td>
+  </tr>
+  <tr>
+    <td width="17%"></td>
+    <td width="33%" class="caption">Format: ####-####-##</td>
+  </tr>
+</table>
+    </fieldset>
+
+<br>
+
+<fieldset>
+<legend>Demographic Information</legend>
+
+<table style="width:100%" cellpadding="4">
+  
+  <tr colspan="4">
+    <font size="2">At USC, an International Student is an individual of foreign nationality who will be entering or has already entered the United States with a student visa. However, students already residing in the U.S. and holding other non-immigrant status visas (such as B1, B2, H4, or L2, for example) are also international students.</font>
+  </tr>
+  <tr>
+    <td width="17%">4. Residency:*</td>
+    <td class="choice" width="23%"><input type="radio" name="Residency" value="citizen" onChange="changeCountry(this)" id="citizen" />citizen of U.S.</td>
+    <td class="choice" width="31%"><input type="radio" name="Residency" value="permanent resident" onClick="changeCountry(this)" id="permanent resident" />permanent resident of U.S.</td>
+    <td class="choice" width="29%"><input type="radio" name="Residency" value="international student" onClick="changeCountry(this)" id="international" />international student</td>
+  </tr>
+  <tr>
+    <td width="17%"><font class="error" id="residencyError"></font></td>
+    <td width="33%" class="caption">Please indicate your residency status*</td>
+  </tr>
+  <tr style="height:10px"></tr>
+  <tr>
+    <td width="17%">5. Country from:*</td>
+    <td width="23%">
+      <select id="countrySelect" name="countrySelect" style="width:300px">
+	<option value="please select">--Please Select--</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td width="17%"><font class="error" id="countryError"></font></td>
+    <td width="33%" class="caption">Country of citizenship*</td>
+    
+  </tr>
+</table>
+
+<table style="width:100%" cellpadding="4">
+  
+  <tr style="height:10px"></tr>
+
+  <tr>
+    <td width="17%">6. Date of Birth:*</td>
+    <td width="6%">
+      <select id="allMonth" name="allMonth" style="width:50px">
+	<option value="Jan">Jan</option>
+	<option value="Feb">Feb</option>
+	<option value="Mar">Mar</option>
+	<option value="Apr">Apr</option>
+	<option value="May">May</option>
+	<option value="Jun">Jun</option>
+	<option value="Jul">Jul</option>
+	<option value="Aug">Aug</option>
+	<option value="Sep">Sep</option>
+	<option value="Oct">Oct</option>
+	<option value="Nov">Nov</option>
+	<option value="Dec">Dec</option>
+      </select>
+    </td>
+    <td width="6%">
+      <select id="allDate" name="allDate" style="width:50px">
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	<option value="6">6</option>
+	<option value="7">7</option>
+	<option value="8">8</option>
+	<option value="9">9</option>
+	<option value="10">10</option>
+	<option value="11">11</option>
+	<option value="12">12</option>
+	<option value="13">13</option>
+	<option value="14">14</option>
+	<option value="15">15</option>
+	<option value="16">16</option>
+	<option value="17">17</option>
+	<option value="18">18</option>
+	<option value="19">19</option>
+	<option value="20">20</option>
+	<option value="21">21</option>
+	<option value="22">22</option>
+	<option value="23">23</option>
+	<option value="24">24</option>
+	<option value="25">25</option>
+	<option value="26">26</option>
+	<option value="27">27</option>
+	<option value="28">28</option>
+	<option value="29">29</option>
+	<option value="30">30</option>
+	<option value="31">31</option>
+      </select>
+    </td>
+    <td width="21%">
+      <input type="text" name="birthYear" id="birthYear" style="width:100px"><font class="error" id="yearError"></font>
+    </td>
+
+    <td width="17%">7. Gender:*</td>
+    <td class="choice" width="11%"><input type="radio" name="gender" value="male" id="gender1" />Male</td>
+    <td class="choice" width="11%"><input type="radio" name="gender" value="female" id="gender2" />Female</td>
+    <td class="choice" width="11%"><input type="radio" name="gender" value="none" id="gender3" />Neither</td>
+  </tr>
+
+  <tr>
+    <td width="17%"></td>
+    <td width="6%" class="caption">Month</td>
+    <td width="6%" class="caption">Day</td>
+    <td width="21%" class="caption">Year(YYYY)</td>
+    <td width="17%"><font class="error" id="genderError"></font></td>
+  </tr>
+
+</table>
+
+<table style="width:100%" cellpadding="4">
+  <tr style="height:10px"></tr>
+  <tr>
+    <td width="17%">8. Ethnicity:*</td>
+    <td width="33%"> 
+      <select id="ethnicity" name="ethnicity" style="width:300px">
+	<option value="please select">--Please Select--</option>
+	<option value="Hispanic">Hispanic/Latino</option>
+	<option value="India">India</option>
+	<option value="Arab">Arab</option>
+	<option value="Black">Black</option>
+	<option value="Multiracial">Multiracial</option>
+	<option value="other">other</option>
+      </select>
+    </td>
+    <td width="50%"></td>
+  </tr>
+  <tr>
+    <td width="17%"><font class="error" id="ethnicityError"></font></td>
+    <td width="33%" class="caption">What is your ethnicity?</td>
+  </tr>
+</table>
+</fieldset>
+
+<br>
+
+<fieldset>
+  <legend>Others</legend>
+  <table width="100%" cellpadding="4">
+    <tr>
+      <td width="25%">9. How do you know about USC?</td>
+      <td width="20%">
+	<input type="checkbox" name="knowUSC" value="friends" id="friends" /> from friends
+      </td>
+      <td width="20%">
+	<input type="checkbox" name="knowUSC" value="USC" id="USC" /> USC website
+      </td>
+      <td width="20%">
+	<input type="checkbox" name="knowUSC" value="media" id="media" /> from media
+      </td>   
+    </tr>
+
+    <tr>
+      <td width="25%">10.Which schools will you apply?</td>
+      <td width="12%">
+	<input type="checkbox" name="otherSchool" value="UCLA" id="UCLA" /> UCLA
+      </td>
+      <td width="12%">
+	<input type="checkbox" name="otherSchool" value="UCB" id="UCB" /> UCB
+      </td>
+      <td width="12%">
+	<input type="checkbox" name="otherSchool" value="Stanford" id="Stanford" /> Stanford
+      </td>
+      <td>
+	<input type="checkbox" name="otherSchool" value="others" id="other school" /> others
+      </td>
+    </tr>
+  </table>
+</fieldset>
+
+<br>
+
+<table width="100%" cellpadding=4>
+  <tr>
+    <td width="100%"></td>
+    <td>
+      <input type="button" name="goToForm2" value="Save & Continue" onClick="firstFormCheck()" style="width:120px" />
+    </td>
+  </tr>
+</table>
+
+<div >
+<p style="disply:block;text-align:center;bottom:0;font-size:12px;color:#707070">2015. Application Website by Jiafeng Ni. All Rights Reserved. </p>
+</div>
+
+</form>
+
+
+</div>
+
+
+
+
+<div id="div2" style="display:none" class="textContainer">
+
+<h2 align="center" display:"block">Application Information</h2>
+
+<font size="2.2">  Please note that all questions followed by an asterisk (*) are required to submit this form.</font><br>
+
+<form>
+<fieldset>
+<legend>Program of Study</legend>
+
+<div class="divInDivLeft">
+<p>1. Please select the semester for which you wish to apply:*</p>
+
+<p>2. Please indicate the school or college to which you are applying:*</p>
+
+<p>3. Select your intended program of study:*</p>
+<p style="font-size:12px;color:#990000">If you have previously applied to USC please provide the following information:</p>
+<p>4. Which term did you apply for?</p>
+<p>5. Please indicate the date that you applied, and the type of it:</p>
+<p>6. Which school or college did you apply to?</p>
+<p><font class="error" id="previousSchoolError"></font><p>
+</div>
+
+<div class="divInDivRight">
+<p><select id="term" name="term" style="width:150px">
+    <option value="please select">--Please Select--</option>
+<option value="summer 2015">summer 2015</option>
+    <option value="fall 2015">fall 2015</option>
+    <option value="spring 2016">spring 2016</option>
+  </select>
+<font class="error" id="termError"></font>
+</p>
+
+<p><select id="college" name="college" style="width:350px" onChange="changeProgram(this)">
+    <option value="please select">--Please Select--</option>
+    <option value="USC Annenberg School for Communication and Journalism">USC Annenberg School for Communication and Journalism</option>
+    <option value="USC Roski School of Fine Arts">USC Roski School of Fine Arts</option>
+    <option value="USC School of Pharmacy">USC School of Pharmacy</option>
+    <option value="USC School of Social Work">USC School of Social Work</option>
+    <option value="USC Viterbi School of Engineering">USC Viterbi School of Engineering</option>
+</select>
+<font class="error" id="schoolError"></font>
+</p>
+
+<p><select id="study program" name="study program" style="width:200px">
+    <option value="please select">--Please Select--</option>
+  </select>
+<font class="error" id="programError"></font> 
+</p>
+<br>
+<p>
+  <select id="term2" name="term2" style="width:100px">
+    <option></option>
+    <option value="spring">spring</option>
+    <option value="summer">summer</option>
+    <option value="fall">fall</option>
+  </select>
+</p>
+<p style="font-size:14px"><input type="date" name="year applied" id="year applied" style="width:130px" />
+  <font class="caption"> &nbsp;&nbsp;Previous Application Date &nbsp;&nbsp;&nbsp;</font>
+  <input type="radio" name="typeOfProgram" id="undergraduate" value="Undergraduate" />Undergraduate
+  <input type="radio" name="typeOfProgram" id="graduate" value="Graduate" />Graduate
+<font class="error" id="previousProgramError"></font>
+</p>
+<p class="schoolApplied"><input type="checkbox" name="schoolApplied" value="USC Annenberg School for Communication and Journalism" id="anne" /> USC Annenberg School for Communication and Journalism</p>
+<p class="schoolApplied"><input type="checkbox" name="schoolApplied" value="USC Roski School of Fine Arts" id="roski" /> USC Roski School of Fine Arts</p>
+<p class="schoolApplied"><input type="checkbox" name="schoolApplie" value="USC School of Pharmacy" id="pharm" /> USC School of Pharmacy</p>
+<p class="schoolApplied"><input type="checkbox" name="schoolApplie" value="USC School of Social Work" id="social" /> USC School of Social Work</p>
+<p class="schoolApplied"><input type="checkbox" name="schoolApplie" value="USC Viterbi School of Engineering" id="viterbi" /> USC Viterbi School of Engineering</p>
+</div>
+
+</fieldset>
+<br>
+
+
+<fieldset>
+<legend>Academic Background</legend>
+
+<div style="display:table">
+
+<div class="divInDivLeft">
+<p>7. Provide undergraduate grading system type and cumulative GPA:*<font class="error" id="gpaError"></font></p>
+<p>8. Please provide languages you can speak fluently:</p>
+<p>9. Please select any computer language you have working experience with:</p>
+<p>10. Please list any publications you have authored or co-authored, and any academic honors, 
+  awards or scholarships you have received. (1000 character limit)</p>
+</div>
+
+<div class="divInDivRight">
+<p>
+<font class="choice">  <input type="radio" name="gradingType" id="grading4" value="4" /> 4 &nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="radio" name="gradingType" id="grading5" value="5" /> 5 &nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="radio" name="gradingType" id="grading100" value="100" /> 100 &nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="text" name="undergraduateGPA" width="150px" id="gpa" /><font class="caption" /> &nbsp;Provide your GPA here*</font>
+</p>
+<p>
+<font class="choice">  <input type="checkbox" name="languageSpeak" value="English" id="english" /> English &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="checkbox" name="languageSpeak" value="Spanish" id="spanish" /> Spanish &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="checkbox" name="languageSpeak" value="French" id="french" />  Franch &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+</p>
+<p>
+<font class="choice">  <input type="checkbox" name="computerLanguage" value="C/C++" id="c" /> C/C++ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="checkbox" name="computerLanguage" value="Java" id="java" /> Java &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="checkbox" name="computerLanguage" value="Python" id="python" /> Python &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="checkbox" name="computerLanguage" value="HTML" id="html" /> HTML/CSS/JavaScript &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+</p>
+<textarea rows="4" cols="50" name="honorText" style="margin-top:5px" id="honor" ></textarea>
+</div>
+</div>
+</fieldset>
+
+
+<br>
+
+<div style="display:table-cell;width:100%"><input type="button" name="submit" value="Save & Submit" onClick="secondFormCheck()" style="width:100px;float:right" /></div>
+<div style="display:table-cell"><input type="button" name="backToForm1" value="Back" onClick="backToFirstForm()" style="width:80px;float:right" /></div>
+
+</form>
+
+<div >
+<p style="disply:block;text-align:center;bottom:0;font-size:12px;color:#707070">2015. Application Website by Jiafeng Ni. All Rights Reserved. </p>
+</div>
+
+</div>
+
+
+
+
+<div id="div3" style="display:none;overflow-y:scroll;min-height:1000px;position:relative;" class="textContainer">
+
+<h2 align="center" display:"block" style="padding-bottom:50px">Application Status Summary</h2>
+<div id="report1Info">
+
+</div>
+
+<br>
+
+
+<div style="display:table-cell;width:100%"></div>
+<div style="display:table-cell">
+<input type="button" name="backToForm1" value="Back to First Form" onClick="backToFirstForm()" style="width:150px;float:right" />
+</div>
+<br>
+<div style="display:table-cell;width:100%">
+</div>
+    <div>
+        <imag src="trojan1.jpg" style="width:304px;height:228px;"></imag>
+    </div>
+</div>
+
+
+
+
+<div id="div4" style="display:none;overflow-y: scroll;position:relative;min-height:1000px" class="textContainer">
+
+
+<h2 align="center" display:"block">Application Detailed Information</h2>
+
+<fieldset style="border:0 solid #000000;position:relative">
+<div style="border:2px solid #EEEEEE;width:47%;height:80%;float:left;padding:1%">
+<h3 align="center" display:"block">Identification</h3>
+<div id="identification"></div>
+
+</div>
+
+<div style="border:2px solid #EEEEEE;width:47%;height:80%;float:right;padding:1%">
+<h3 align="center" display:"block">Application</h3>
+<div id="application"><div>
+</div>
+
+</fieldset>
+
+<br>
+
+<div style="display:table-cell;width:100%;font-size:15" id="report1Info">
+<input type="button" name="backToForm1" value="Back to First Form" onClick="backToFirstForm()" style="width:150px;float:right" />
+</div>
+<div style="display:table-cell">
+<input type="button" name="goToReport2" value="Back to Application Summary" onClick="goToReport1()" style="width:180px;float:right" />
+</div>
+
+
+    
+</div>
+
+</body>
+</html>
